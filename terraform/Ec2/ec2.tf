@@ -4,26 +4,29 @@ provider "aws" {
   region     = "${var.region}"
 }
 
-terraform {
-  required_version = "< 0.12.0"
-}
-resource "aws_key_pair" "aws"{
-
-    key_name = "aws"
-    public_key = "~/aws.pem"
-}
+#terraform {
+#  required_version = "< 0.12.0"
+#}
+#resource "aws_key_pair" "aws"{
+#
+#    key_name = "aws"
+#    public_key = "~/aws.pem"
+#}
 resource "aws_instance" "apache2" {
 	ami = "ami-06b263d6ceff0b3dd"
 	instance_type = "t2.micro"
-	key_name       =  "var.key_name"
-    tags {
+	key_name       =  "${var.key_name}"
+    tags = {
       Name = "Ec2-Ubuntu"
   }
 
-connection {
-    user         =  "ubuntu"
+  connection {
+        type         =  "ssh"
+        host         =  "${self.private_ip}"
+        user         =  "ubuntu"
 	private_key  =  "${file(var.private_key_path)}"
-	}
+    #    host     =  "aws_instance.apache2.public_dns"
+     }
 
   provisioner "remote-exec" {
 	  inline = [
