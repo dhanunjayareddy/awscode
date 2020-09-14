@@ -1,0 +1,5 @@
+access_key         = "xxxx"
+secret_key         = "xxxxxx"
+private_key_path   = "~/aws.pem"
+region             = "us-east-1"
+key_name           = "terraform.pem"
